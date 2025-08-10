@@ -209,7 +209,7 @@
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
     const states = [
-      { label: 'Status: 'In Development', color: getComputedStyle(document.documentElement).getPropertyValue('--warn') },
+      { label: "Status: In Development", color: getComputedStyle(document.documentElement).getPropertyValue('--warn') },
     ];
     let i = 0;
     setInterval(()=>{ i=(i+1)%states.length; const s=states[i]; dot.style.background=s.color; dot.style.boxShadow=`0 0 16px ${s.color.trim()}aa`; text.textContent=s.label; }, 8000);
