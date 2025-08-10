@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bimmer – Precision in Every Pixel</title>
+  <meta name="description" content="Bimmer – smooth aim, prediction, custom FOV, keybinds.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    :root{ --bg:#0b0b0f; --panel:#121218; --muted:#9aa3af; --text:#e5e7eb; --brand:#ff2d55; --ok:#22c55e; --warn:#f59e0b; --shadow:0 10px 30px rgba(255,45,85,.15); --radius:16px; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(80rem 80rem at 80% -10%, rgba(255,45,85,.08), transparent 40%),
+                  radial-gradient(60rem 60rem at -20% 20%, rgba(255,255,255,.06), transparent 40%), var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(11,11,15,.7);backdrop-filter: blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav .inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .logo{display:flex;align-items:center;gap:.6rem;font-weight:800;letter-spacing:.5px}
+    .logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg, var(--brand), #a10028);box-shadow:var(--shadow);position:relative}
+    .logo-mark:after{content:"";position:absolute;inset:6px;border-radius:6px;border:2px solid rgba(255,255,255,.3)}
+    .logo span{font-family:Orbitron, Inter, sans-serif}
+    .nav-links{display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1.1rem;border-radius:999px;background:#1a1a22;border:1px solid rgba(255,255,255,.08);cursor:pointer}
+    .btn:hover{border-color:rgba(255,255,255,.18)}
+    .btn.primary{background:linear-gradient(135deg,var(--brand),#b1003d);color:white;border:none;box-shadow:var(--shadow)}
+
+    .section{padding:72px 0; scroll-margin-top:80px}
+    .hero{position:relative;padding:96px 0 56px}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+    .eyebrow{color:var(--brand);font-weight:800;text-transform:uppercase;letter-spacing:.16em;font-size:.8rem}
+    h1{margin:.4rem 0 1rem;font-size:clamp(2rem, 5vw, 3.6rem);line-height:1.05}
+    .subtitle{color:var(--muted);font-size:1.05rem;max-width:44ch}
+    .kicker{color:var(--muted);margin-bottom:24px}
+
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px}
+    .card h3{margin:0 0 .35rem}
+    .card p{color:var(--muted);margin:0}
+
+    .pricing{display:grid;grid-template-columns:1fr;gap:16px}
+    .plan{border-radius:20px;background:radial-gradient(60% 120% at 80% -20%, rgba(255,45,85,.10), transparent), #101018;border:1px solid rgba(255,255,255,.08);padding:24px;display:flex;flex-direction:column}
+    .plan h3{margin:0 0 .2rem}
+    .price{font-size:2rem;font-weight:800;margin:.2rem 0 1rem}
+    .plan ul{margin:0 0 16px;padding-left:18px;color:#cbd5e1}
+    .plan li{margin:.35rem 0}
+
+    .faq{max-width:900px;margin:0 auto}
+    .faq details{background:#0f0f16;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;margin:10px 0}
+    .faq summary{cursor:pointer;font-weight:600}
+    .faq p{color:#aeb6c2}
+
+    .status{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:999px;background:#0f0f16;border:1px solid rgba(255,255,255,.08);width:max-content}
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 16px rgba(34,197,94,.6)}
+
+    footer{padding:36px 0;border-top:1px solid rgba(255,255,255,.06);color:#9aa3af}
+
+    /* Modal */
+    dialog.payment {
+      border: none; border-radius: 20px; max-width: 520px; width: calc(100% - 24px);
+      background: #0f0f16; color: var(--text); padding: 0; box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+    .payment header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .payment h3{margin:0;font-size:1.1rem}
+    .payment .content{padding:18px}
+    .options{display:grid;gap:10px}
+    .option{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:#11111a;border:1px solid rgba(255,255,255,.08)}
+    .option small{color:#aab0bc}
+    .option .btn{padding:.6rem .9rem}
+    .close-x{background:#1a1a22;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:6px 10px;cursor:pointer}
+    .note{color:#9aa3af;margin-top:10px;font-size:.9rem}
+    .success{display:none;color:#a7f3d0;margin-top:8px;font-size:.95rem}
+    .copy{font-size:.9rem;opacity:.9;border:1px dashed rgba(255,255,255,.2);padding:8px 10px;border-radius:10px;margin-top:8px}
+    .copy .mini{opacity:.75;font-size:.85rem}
+    .toast{position:fixed;right:16px;bottom:16px;background:#0f0f16;border:1px solid rgba(255,255,255,.12);padding:12px 14px;border-radius:12px;display:none}
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="container inner">
+      <a class="logo" href="#"><span class="logo-mark"></span><span>Bimmer</span></a>
+      <div class="nav-links">
+        <a class="btn" href="#features">Features</a>
+        <a class="btn" href="#pricing">Pricing</a>
+        <a class="btn" href="#faq">FAQ</a>
+        <a class="btn" href="https://discord.gg/zThXnrwGSa" target="_blank" rel="noopener noreferrer">Discord</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="status" title="Realtime client status">
+          <span class="dot" id="status-dot"></span>
+          <span id="status-text">Status: In Development</span>
+        </div>
+        <p class="eyebrow" style="margin-top:16px">Next-gen aimbot engine</p>
+        <h1>Precision in Every Pixel</h1>
+        <p class="subtitle">Bimmer delivers buttery smooth aim, motion prediction, custom FOV, and instant keybind toggles — wrapped in a clean, minimal client.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section id="features" class="section">
+    <div class="container">
+      <h2>Built to Dominate</h2>
+      <p class="kicker">Everything you need to keep shots crisp and on target.</p>
+      <div class="features">
+        <article class="card"><h3>Smooth Aim</h3><p>Adjustable tracking that feels human, not robotic.</p></article>
+        <article class="card"><h3>Prediction</h3><p>Lead moving targets with calculated precision.</p></article>
+        <article class="card"><h3>Custom FOV</h3><p>Define your lock‑zone.</p></article>
+        <article class="card"><h3>Keybinds</h3><p>Instant on/off and mode switches so you’re always in control.</p></article>
+        <article class="card"><h3>Profiles & Configs</h3><p>Save setups per game or weapon — swap fast.</p></article>
+        <article class="card"><h3>Lightweight Client</h3><p>Low overhead and clean UI.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <h2>Simple Pricing</h2>
+      <p class="kicker">One-time payment. Lifetime license.</p>
+      <div class="pricing" id="purchase">
+        <div class="plan" style="outline:2px solid rgba(255,45,85,.4)">
+          <h3>Lifetime</h3>
+          <div class="price">$4.50</div>
+          <ul>
+            <li>One-time payment</li>
+            <li>Lifetime access</li>
+            <li>All features unlocked</li>
+            <li>Free updates forever</li>
+            <li>VIP support</li>
+          </ul>
+          <button id="purchaseBtn" class="btn primary">Purchase</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <div class="container faq">
+      <h2>FAQ</h2>
+      <details><summary>Is Bimmer detected?</summary><p>We monitor status constantly and push updates fast. So mostly no.</p></details>
+      <details><summary>What games are supported?</summary><p>At the moment only roblox im working to make in forntine too. Check our Discord for the latest support list.</p></details>
+      <details><summary>Refund policy?</summary><p>All sales are final. If you have setup issues, our support team will help you fix them.</p></details>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+      <div class="logo" aria-label="Bimmer brand small">
+        <span class="logo-mark" style="transform:scale(.8)"></span>
+        <span style="font-size:.95rem">Bimmer</span>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href="https://discord.gg/zThXnrwGSa" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a class="btn" href="#features">Features</a>
+      </div>
+      <small style="color:#77808d">© <span id="year"></span> Bimmer. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <!-- Payment Modal -->
+  <dialog id="paymentModal" class="payment">
+    <header>
+      <h3>How will you pay?</h3>
+      <button class="close-x" onclick="document.getElementById('paymentModal').close()">Close</button>
+    </header>
+    <div class="content">
+      <div class="options">
+        <div class="option">
+          <div><strong>PayPal</strong><br><small>$1.5</small></div>
+          <button class="btn" data-pay="paypal">Select</button>
+        </div>
+        <div class="option">
+          <div><strong>Robux</strong><br><small>550 Robux</small></div>
+          <button class="btn" data-pay="robux">Select</button>
+        </div>
+        <div class="option">
+          <div><strong>Nitro / Boost</strong><br><small>2 boosts / 1 Nitro Basic</small></div>
+          <button class="btn" data-pay="nitro">Select</button>
+        </div>
+      </div>
+      <div id="instructions" class="copy" style="display:none"></div>
+      <div id="success" class="success">Copied to clipboard ✔</div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Year
+    (function(){ var y=document.getElementById('year'); if(y) y.textContent = new Date().getFullYear(); })();
+
+    // Cosmetic status ticker
+    const dot = document.getElementById('status-dot');
+    const text = document.getElementById('status-text');
+    const states = [
+      { label: 'Status: 'In Development', color: getComputedStyle(document.documentElement).getPropertyValue('--warn') },
+    ];
+    let i = 0;
+    setInterval(()=>{ i=(i+1)%states.length; const s=states[i]; dot.style.background=s.color; dot.style.boxShadow=`0 0 16px ${s.color.trim()}aa`; text.textContent=s.label; }, 8000);
+
+    // Open modal from Purchase button
+    const modal = document.getElementById('paymentModal');
+    document.getElementById('purchaseBtn')?.addEventListener('click', ()=> modal.showModal());
+
+    // Payment option handlers
+    const instructions = document.getElementById('instructions');
+    const success = document.getElementById('success');
+    const templates = {
+      paypal: "PayPal – $1.5\nCreate a ticket in my dc sv (https://discord.gg/zThXnrwGSa) or if ticket isnt a option dm me\nAfter payment, show us the proof u bought it (DM @seducted.lol)",
+      robux: "Robux – 550 Robux\n:\nhttps://www.roblox.com/game-pass/1391354610/Buy-Bimmer\nAfter purchase, DM @seducted.lol your username + proof you bought the gamepass. ",
+      nitro: "Nitro / Boost – 2 Boosts\nBoost this server: https://discord.gg/zThXnrwGSa\nThen DM @seducted.lol with proof."
+    };
+    document.querySelectorAll('[data-pay]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-pay');
+        const text = templates[key];
+        instructions.style.display = 'block';
+        instructions.innerHTML = text.replace(/\n/g,'<br>') + '<div class="mini" style="margin-top:6px">Click to copy</div>';
+      });
+    });
+    instructions.addEventListener('click', async () => {
+      const plain = instructions.innerText.replace('Click to copy','').trim();
+      try{ await navigator.clipboard.writeText(plain); success.style.display='block'; setTimeout(()=> success.style.display='none', 1500); }catch(e){}
+    });
+  </script>
+</body>
+</html>
