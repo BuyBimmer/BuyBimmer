@@ -62,7 +62,7 @@
 
     footer{padding:36px 0;border-top:1px solid rgba(255,255,255,.06);color:#9aa3af}
 
-    /* Modal */
+    /* Modal (dark themed) */
     dialog.payment {
       border: none; border-radius: 20px; max-width: 520px; width: calc(100% - 24px);
       background: #0f0f16; color: var(--text); padding: 0; box-shadow: 0 20px 60px rgba(0,0,0,.4);
@@ -119,7 +119,7 @@
       <div class="features">
         <article class="card"><h3>Smooth Aim</h3><p>Adjustable tracking that feels human, not robotic.</p></article>
         <article class="card"><h3>Prediction</h3><p>Lead moving targets with calculated precision.</p></article>
-        <article class="card"><h3>Custom FOV</h3><p>Define your lock‑zone.</p></article>
+        <article class="card"><h3>Custom FOV</h3><p>Define your lock-zone.</p></article>
         <article class="card"><h3>Keybinds</h3><p>Instant on/off and mode switches so you’re always in control.</p></article>
         <article class="card"><h3>Profiles & Configs</h3><p>Save setups per game or weapon — swap fast.</p></article>
         <article class="card"><h3>Lightweight Client</h3><p>Low overhead and clean UI.</p></article>
@@ -154,7 +154,7 @@
     <div class="container faq">
       <h2>FAQ</h2>
       <details><summary>Is Bimmer detected?</summary><p>We monitor status constantly and push updates fast. So mostly no.</p></details>
-      <details><summary>What games are supported?</summary><p>At the moment only roblox im working to make in forntine too. Check our Discord for the latest support list.</p></details>
+      <details><summary>What games are supported?</summary><p>At the moment only Roblox; working on Fortnite too. Check our Discord for the latest support list.</p></details>
       <details><summary>Refund policy?</summary><p>All sales are final. If you have setup issues, our support team will help you fix them.</p></details>
     </div>
   </section>
@@ -194,49 +194,55 @@
           <button class="btn" data-pay="nitro">Select</button>
         </div>
       </div>
+
       <div id="instructions" class="copy" style="display:none"></div>
       <div id="success" class="success">Copied to clipboard ✔</div>
+      <p class="note">Click any option to view & copy the instructions. This stays on-page.</p>
     </div>
   </dialog>
 
-  <div id="toast" class="toast"></div>
-
   <script>
-    // Year
+    // Footer year
     (function(){ var y=document.getElementById('year'); if(y) y.textContent = new Date().getFullYear(); })();
 
-    // Cosmetic status ticker
+    // Status text (fixed)
     const dot = document.getElementById('status-dot');
-    const text = document.getElementById('status-text');
-    const states = [
-      { label: "Status: In Development", color: getComputedStyle(document.documentElement).getPropertyValue('--warn') },
-    ];
-    let i = 0;
-    setInterval(()=>{ i=(i+1)%states.length; const s=states[i]; dot.style.background=s.color; dot.style.boxShadow=`0 0 16px ${s.color.trim()}aa`; text.textContent=s.label; }, 8000);
+    const textEl = document.getElementById('status-text');
+    const state = { label: "Status: In Development", color: getComputedStyle(document.documentElement).getPropertyValue('--warn').trim() };
+    dot.style.background = state.color;
+    dot.style.boxShadow = `0 0 16px ${state.color}aa`;
+    textEl.textContent = state.label;
 
-    // Open modal from Purchase button
+    // Modal: open from Purchase
     const modal = document.getElementById('paymentModal');
-    document.getElementById('purchaseBtn')?.addEventListener('click', ()=> modal.showModal());
+    document.getElementById('purchaseBtn')?.addEventListener('click', () => {
+      if (modal?.showModal) modal.showModal();
+      else modal.setAttribute('open', ''); // fallback
+    });
 
-    // Payment option handlers
+    // Payment option handlers + click-to-copy
     const instructions = document.getElementById('instructions');
     const success = document.getElementById('success');
     const templates = {
-      paypal: "PayPal – $1.5\nCreate a ticket in my dc sv (https://discord.gg/zThXnrwGSa) or if ticket isnt a option dm me\nAfter payment, show us the proof u bought it (DM @seducted.lol)",
-      robux: "Robux – 550 Robux\n:\nhttps://www.roblox.com/game-pass/1391354610/Buy-Bimmer\nAfter purchase, DM @seducted.lol your username + proof you bought the gamepass. ",
+      paypal: "PayPal – $1.5\nCreate a ticket in my DC server (https://discord.gg/zThXnrwGSa). If tickets are off, DM me.\nAfter payment, show proof (DM @seducted.lol).",
+      robux: "Robux – 550 Robux\nBuy the Gamepass:\nhttps://www.roblox.com/game-pass/1391354610/Buy-Bimmer\nAfter purchase, DM @seducted.lol your username + proof.",
       nitro: "Nitro / Boost – 2 Boosts\nBoost this server: https://discord.gg/zThXnrwGSa\nThen DM @seducted.lol with proof."
     };
     document.querySelectorAll('[data-pay]').forEach(btn => {
       btn.addEventListener('click', () => {
         const key = btn.getAttribute('data-pay');
-        const text = templates[key];
+        const t = templates[key];
         instructions.style.display = 'block';
-        instructions.innerHTML = text.replace(/\n/g,'<br>') + '<div class="mini" style="margin-top:6px">Click to copy</div>';
+        instructions.innerHTML = t.replace(/\n/g,'<br>') + '<div class="mini" style="margin-top:6px">Click to copy</div>';
       });
     });
     instructions.addEventListener('click', async () => {
       const plain = instructions.innerText.replace('Click to copy','').trim();
-      try{ await navigator.clipboard.writeText(plain); success.style.display='block'; setTimeout(()=> success.style.display='none', 1500); }catch(e){}
+      try{
+        await navigator.clipboard.writeText(plain);
+        success.style.display = 'block';
+        setTimeout(()=> success.style.display='none', 1500);
+      }catch(e){}
     });
   </script>
 </body>
